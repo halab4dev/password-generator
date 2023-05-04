@@ -1,0 +1,63 @@
+<html>
+<head>
+    <title>Random Password Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        #password {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 20px;
+        }
+
+        #generate {
+            padding: 10px;
+            background-color: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h1>Random Password Generator</h1>
+<p>Click the button below to generate a random password.</p>
+<div id="password">********</div>
+<button id="generate">Generate</button>
+<script>
+    // A function that returns a random character from a given string
+    function randomChar(str) {
+        return str[Math.floor(Math.random() * str.length)];
+    }
+
+    // A function that generates a random password of a given length
+    function generatePassword(length) {
+// The possible characters for the password
+        var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&amp;*()";
+// The password variable
+        var password = "";
+// Loop through the length and add a random character each time
+        for (var i = 0; i < length; i++) {
+            password += randomChar(chars);
+        }
+// Return the password
+        return password;
+    }
+
+    // Get the password element
+    var passwordElement = document.getElementById("password");
+    // Get the generate button element
+    var generateButton = document.getElementById("generate");
+    // Add a click event listener to the generate button
+    generateButton.addEventListener("click", function () {
+// Generate a random password of 8 characters
+        var password = generatePassword(20);
+// Display the password in the password element
+        passwordElement.textContent = password;
+    });
+</script>
+</body>
+</html>
