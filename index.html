@@ -20,12 +20,48 @@
             border: none;
             cursor: pointer;
         }
+
+        #length {
+            width: 50px;
+        }
+
+        #options {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .option {
+            margin: 10px;
+        }
     </style>
 </head>
 <body>
 <h1>Random Password Generator</h1>
-<p>Click the button below to generate a random password.</p>
+<p>Enter the length and options for your password and click the button below to generate it.</p>
 <div id="password">********</div>
+<div id="options">
+    <div className="option">
+        <label htmlFor="length">Length:</label>
+        <input id="length" type="number" value="8" min="4" max="16">
+    </div>
+    <div className="option">
+        <input id="uppercase" type="checkbox" checked>
+        <label htmlFor="uppercase">Uppercase</label>
+    </div>
+    <div className="option">
+        <input id="lowercase" type="checkbox" checked>
+        <label htmlFor="lowercase">Lowercase</label>
+    </div>
+    <div className="option">
+        <input id="numbers" type="checkbox" checked>
+        <label htmlFor="numbers">Numbers</label>
+    </div>
+    <div className="option">
+        <input id="symbols" type="checkbox" checked>
+        <label htmlFor="symbols">Symbols</label>
+    </div>
+</div>
 <button id="generate">Generate</button>
 <script>
     // A function that returns a random character from a given string
@@ -33,16 +69,74 @@
         return str[Math.floor(Math.random() * str.length)];
     }
 
-    // A function that generates a random password of a given length
-    function generatePassword(length) {
-// The possible characters for the password
-        var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&amp;*()";
+    // A function that generates a random password based on the input conditions
+    function generatePassword() {
+// Get the input elements
+        var lengthElement = document.getElementById("length");
+        var uppercaseElement = document.getElementById("uppercase");
+        var lowercaseElement = document.getElementById("lowercase");
+        var numbersElement = document.getElementById("numbers");
+        var symbolsElement = document.getElementById("symbols");
+
+// Get the input values
+        var length = parseInt(lengthElement.value);
+        var uppercase = uppercaseElement.checked;
+        var lowercase = lowercaseElement.checked;
+        var numbers = numbersElement.checked;
+        var symbols = symbolsElement.checked;
+
+// The possible characters for each option
+        var uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
+        var numbersChars = "0123456789";
+        var symbolsChars = "!@#$%^&amp;*()";
+
 // The password variable
         var password = "";
-// Loop through the length and add a random character each time
+
+// The characters variable that contains all the possible characters based on the options
+        var chars = "";
+// Add the uppercase characters if the option is checked
+        if (uppercase) {
+            chars += uppercaseChars;
+// Add a random uppercase character to the password to ensure at least one
+            password += randomChar(uppercaseChars);
+// Reduce the length by one
+            length--;
+        }
+
+// Add the lowercase characters if the option is checked
+        if (lowercase) {
+            chars += lowercaseChars;
+// Add a random lowercase character to the password to ensure at least one
+            password += randomChar(lowercaseChars);
+// Reduce the length by one
+            length--;
+        }
+
+// Add the numbers characters if the option is checked
+        if (numbers) {
+            chars += numbersChars;
+// Add a random number character to the password to ensure at least one
+            password += randomChar(numbersChars);
+// Reduce the length by one
+            length--;
+        }
+
+// Add the symbols characters if the option is checked
+        if (symbols) {
+            chars += symbolsChars;
+// Add a random symbol character to the password to ensure at least one
+            password += randomChar(symbolsChars);
+// Reduce the length by one
+            length--;
+        }
+
+// Loop through the remaining length and add a random character from the chars string each time
         for (var i = 0; i < length; i++) {
             password += randomChar(chars);
         }
+
 // Return the password
         return password;
     }
@@ -53,8 +147,8 @@
     var generateButton = document.getElementById("generate");
     // Add a click event listener to the generate button
     generateButton.addEventListener("click", function () {
-// Generate a random password of 8 characters
-        var password = generatePassword(20);
+// Generate a random password based on the input conditions
+        var password = generatePassword();
 // Display the password in the password element
         passwordElement.textContent = password;
     });
